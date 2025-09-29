@@ -18,13 +18,13 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "#0f0"; // зелёный текст
-    ctx.font = "16px monospace";
+    ctx.font = "24px monospace";
+    const spacing = 20;
 
-    for (let i = 0; i < canvas.width / 10; i++) {
-        const x = i * 10;
-        const y = Math.random() * canvas.height;
+    for (let i = 0; i < canvas.width; x += spacing) {
+        const y = Math.floor(Math.random() * canvas.height / spacing) * spacing;
         ctx.fillText(randomChar(), x, y);
     }
 }
 
-setInterval(draw, 50);
+setInterval(draw, 200);
