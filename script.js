@@ -20,7 +20,7 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "#0f0"; // зелёный текст
-    ctx.font = "24px monospace"; // размер цифр
+    ctx.font = "40px monospace"; // размер цифр
     const spacing = 20; // расстояние между символами
 
     for (let x = 0; x < canvas.width; x += spacing) {
@@ -30,4 +30,4 @@ function draw() {
 }
 
 // Рисуем каждые 200 мс (медленнее)
-setInterval(draw, 200);
+setInterval(draw, 300);
