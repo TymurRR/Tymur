@@ -1,30 +1,33 @@
 const canvas = document.getElementById("terminal");
 const ctx = canvas.getContext("2d");
 
+// Подгоняем canvas под весь экран
 function resizeCanvas() {
     canvas.width = window.innerWidth;
-    canvas.height = 400;
+    canvas.height = window.innerHeight; // теперь высота равна всей странице
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
+// Функция случайного символа
 function randomChar() {
-    const chars = "01";
-    return chars[Math.floor(Math.random() * chars.length)];
+    return Math.random() > 0.5 ? "1" : "0";
 }
 
 function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    // Полупрозрачный фон для эффекта "следа"
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "#0f0"; // зелёный текст
-    ctx.font = "24px monospace";
-    const spacing = 20;
+    ctx.font = "24px monospace"; // размер цифр
+    const spacing = 20; // расстояние между символами
 
-    for (let i = 0; i < canvas.width; x += spacing) {
+    for (let x = 0; x < canvas.width; x += spacing) {
         const y = Math.floor(Math.random() * canvas.height / spacing) * spacing;
         ctx.fillText(randomChar(), x, y);
     }
 }
 
+// Рисуем каждые 200 мс (медленнее)
 setInterval(draw, 200);
