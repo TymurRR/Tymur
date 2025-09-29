@@ -1,33 +1,48 @@
-const canvas = document.getElementById("terminal");
-const ctx = canvas.getContext("2d");
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
 
-// Подгоняем canvas под весь экран
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight; // теперь высота равна всей странице
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+// Настройки
+const fontSize = 24;         // размер символов
+const columns = Math.floor(width / fontSize); // количество колонок
+const drops = Array(columns).fill(0);        // y-позиция для каждой колонки
+
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
 
 // Функция случайного символа
 function randomChar() {
-    return Math.random() > 0.5 ? "1" : "0";
+    const chars = '01';
+    return chars[Math.floor(Math.random() * chars.length)];
 }
 
+// Основной цикл
 function draw() {
-    // Полупрозрачный фон для эффекта "следа"
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Полупрозрачный черный фон для эффекта “следа”
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, width, height);
 
-    ctx.fillStyle = "#0f0"; // зелёный текст
-    ctx.font = "40px monospace"; // размер цифр
-    const spacing = 20; // расстояние между символами
+    ctx.fillStyle = '#0f0'; // зелёный цвет
+    ctx.font = fontSize + 'px monospace';
 
-    for (let x = 0; x < canvas.width; x += spacing) {
-        const y = Math.floor(Math.random() * canvas.height / spacing) * spacing;
+    for (let i = 0; i < drops.length; i++) {
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
         ctx.fillText(randomChar(), x, y);
+
+        // Сброс потока после достижения низа страницы
+        if (y > height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+
+        drops[i]++;
     }
 }
 
-// Рисуем каждые 200 мс (медленнее)
-setInterval(draw, 300);
+// Рисуем каждые 50 мс (плавно)
+setInterval(draw, 50);

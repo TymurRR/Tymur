@@ -1,13 +1,27 @@
 html, body {
     margin: 0;
+    padding: 0;
+    width: 100%;
     height: 100%;
+    background: black;
+    font-family: monospace;
+    overflow: hidden;
 }
 
-#terminal {
+#matrix {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    display: block;
+    z-index: -1; /* фон за контентом */
+}
+
+h1 {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-top: 50px;
+    color: white;
 }
