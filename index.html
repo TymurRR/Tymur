@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Terminal Animation</title>
+<meta charset="UTF-8">
+<title>Terminal Loader</title>
 <style>
   body {
     margin: 0;
@@ -15,45 +15,49 @@
     color: #0f0;
     font-size: 22px;
   }
-  .terminal {
+  .terminal, #portfolio {
     width: 80%;
     max-width: 800px;
+    text-align: center;
+  }
+  .terminal {
     background: #000;
     padding: 20px;
     border: 2px solid #0f0;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0,255,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .line {
-    white-space: pre;
-    margin: 5px 0;
+  .line { white-space: pre; margin: 5px 0; }
+  #loaderGif {
+    display: none;
+    max-width: 300px;
   }
-  .cursor {
-    display: inline-block;
-    width: 10px;
-    background: #0f0;
-    margin-left: 2px;
-    animation: blink 1s infinite;
-  }
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+  #portfolio {
+    display: none;
+    color: #fff;
   }
 </style>
 </head>
 <body>
-  <div class="terminal" id="terminal">
-    <!-- сюда будут печататься строки -->
-  </div>
+<div class="terminal" id="terminal"></div>
+<img id="loaderGif" src="gifforweb.gif" alt="Loading..." />
+<div id="portfolio">
+  <h1>Welcome to My Website</h1>
+  <p>Here will information about my projects</p>
+</div>
 
 <script>
 const terminal = document.getElementById("terminal");
+const loaderGif = document.getElementById("loaderGif");
+const portfolio = document.getElementById("portfolio");
 
 function typeLine(text, delay = 50, callback) {
   const line = document.createElement("div");
   line.className = "line";
   terminal.appendChild(line);
-
   let i = 0;
   function typing() {
     if (i < text.length) {
@@ -67,11 +71,43 @@ function typeLine(text, delay = 50, callback) {
   typing();
 }
 
-// Сценарий анимации
+function animateDownloading(baseText="Downloading", interval=500, cycles=10, onFinish) {
+  const line = document.createElement("div");
+  line.className = "line";
+  terminal.appendChild(line);
+
+  let dots = 0;
+  let count = 0;
+  const timer = setInterval(() => {
+    dots = (dots + 1) % 4; // 0..3
+    line.textContent = baseText + ".".repeat(dots);
+    count++;
+    if (count >= cycles) {
+      clearInterval(timer);
+      if (onFinish) onFinish();
+    }
+  }, interval);
+}
+
 typeLine("print('Hi')", 80, () => {
-  // после паузы выводим результат
   setTimeout(() => {
-    typeLine("Hi", 100);
+    typeLine("Hi", 100, () => {
+      setTimeout(() => {
+        typeLine("for x in memory", 80, () => {
+          setTimeout(() => {
+            animateDownloading("Downloading", 500, 11, () => {
+              terminal.style.display = "none";
+              loaderGif.style.display = "block";
+
+              setTimeout(() => {
+                loaderGif.style.display = "none";
+                portfolio.style.display = "block";
+              }, 3000);
+            });
+          }, 500);
+        });
+      }, 500);
+    });
   }, 500);
 });
 </script>
