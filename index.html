@@ -1,15 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>My first HTML Page</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<title>Terminal Animation</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Courier New", monospace;
+    color: #0f0;
+    font-size: 22px;
+  }
+  .terminal {
+    width: 80%;
+    max-width: 800px;
+    background: #000;
+    padding: 20px;
+    border: 2px solid #0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,255,0,0.3);
+  }
+  .line {
+    white-space: pre;
+    margin: 5px 0;
+  }
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    background: #0f0;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+</style>
 </head>
 <body>
-    <h1>Hello, Github</h1>
+  <div class="terminal" id="terminal">
+    <!-- сюда будут печататься строки -->
+  </div>
 
-    <canvas id="matrix"></canvas>
+<script>
+const terminal = document.getElementById("terminal");
 
-    <script src="script.js"></script>
+function typeLine(text, delay = 50, callback) {
+  const line = document.createElement("div");
+  line.className = "line";
+  terminal.appendChild(line);
+
+  let i = 0;
+  function typing() {
+    if (i < text.length) {
+      line.textContent += text[i];
+      i++;
+      setTimeout(typing, delay);
+    } else {
+      if (callback) callback();
+    }
+  }
+  typing();
+}
+
+// Сценарий анимации
+typeLine("print('Hi')", 80, () => {
+  // после паузы выводим результат
+  setTimeout(() => {
+    typeLine("Hi", 100);
+  }, 500);
+});
+</script>
 </body>
 </html>
