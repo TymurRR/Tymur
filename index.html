@@ -46,7 +46,7 @@
 <img id="loaderGif" src="gifforweb.gif" alt="Loading..." />
 <div id="portfolio">
   <h1>Welcome to My Website</h1>
-  <p>Here will information about my projects</p>
+  <p>Here will be information about my projects</p>
 </div>
 
 <script>
@@ -54,21 +54,27 @@ const terminal = document.getElementById("terminal");
 const loaderGif = document.getElementById("loaderGif");
 const portfolio = document.getElementById("portfolio");
 
-function typeLine(text, delay = 50, callback) {
+function typeLine(text, delay = 50, callback, instant = false) {
   const line = document.createElement("div");
   line.className = "line";
   terminal.appendChild(line);
-  let i = 0;
-  function typing() {
-    if (i < text.length) {
-      line.textContent += text[i];
-      i++;
-      setTimeout(typing, delay);
-    } else {
-      if (callback) callback();
+
+  if (instant) {
+    line.textContent = text;
+    if (callback) callback();
+  } else {
+    let i = 0;
+    function typing() {
+      if (i < text.length) {
+        line.textContent += text[i];
+        i++;
+        setTimeout(typing, delay);
+      } else {
+        if (callback) callback();
+      }
     }
+    typing();
   }
-  typing();
 }
 
 function animateDownloading(baseText="Downloading", interval=500, cycles=10, onFinish) {
@@ -89,25 +95,25 @@ function animateDownloading(baseText="Downloading", interval=500, cycles=10, onF
   }, interval);
 }
 
-typeLine("print('Hi')", 80, () => {
+typeLine("print('Hello')", 80, () => {
   setTimeout(() => {
-    typeLine("Hi", 100, () => {
+    typeLine("Hello", 100, () => {
       setTimeout(() => {
-        typeLine("for x in memory", 80, () => {
+        typeLine("for x in skills: print(x)", 80, () => {
           setTimeout(() => {
-            animateDownloading("Downloading", 500, 11, () => {
+            animateDownloading("Downloading", 150, 11, () => {
               terminal.style.display = "none";
               loaderGif.style.display = "block";
 
               setTimeout(() => {
                 loaderGif.style.display = "none";
                 portfolio.style.display = "block";
-              }, 3000);
+              }, 1500);
             });
           }, 500);
         });
       }, 500);
-    });
+    }, true);
   }, 500);
 });
 </script>
